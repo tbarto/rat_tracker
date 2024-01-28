@@ -32,10 +32,10 @@ function addPoint(e) {
 	fetch('https://yowmxwf75c.execute-api.us-east-1.amazonaws.com/prod/rat-location', {
 		method: 'POST',
 		headers: {
-			'Accept': 'application/json',
-			'Content-Type': 'application/json',
-			'Access-Control-Allow-Origin':'*'
-		},
+			"access-control-allow-origin": "*",
+			'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+			'Access-Control-Allow-Methods': '*',
+		  },
 		body: JSON.stringify({
 			 "latitude": latitude,
 			 "longitude": longitude 
