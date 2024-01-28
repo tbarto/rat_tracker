@@ -28,7 +28,22 @@ function addPoint(e) {
 	const latitude = e.latLng.toJSON()["lat"]
 	const longitude = e.latLng.toJSON()["lng"]
 
-	// Insert this lat/long into DynamoDB
+	// Insert this lat/long into DynamoDB by calling API Gateway
+	fetch('https://yowmxwf75c.execute-api.us-east-1.amazonaws.com/prod', {
+		method: 'POST',
+		headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json',
+			'Access-Control-Allow-Origin':'*',
+			'Access-Control-Allow-Methods':'POST,PATCH,OPTIONS'
+		},
+		body: JSON.stringify({
+			 "latitude": latitude,
+			 "longitude": longitude 
+			})
+	})
+	   .then(response => response.json())
+	   .then(response => console.log(JSON.stringify(response)))
 
 
 	// Create a new point with the lat and long from click event
