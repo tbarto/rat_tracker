@@ -61,26 +61,31 @@ function toggleHeatmap() {
 	heatmap.setMap(heatmap.getMap() ? null : map);
 }
 
-// Heatmap data: 500 Points
 function getPoints() {
+	let dataPoints = []
 
-	// Fetch real data points from DynamoDB and insert them into an array like below
-	const maxLat = 42.38183294441887
-	const minLat = 42.3342011325971
-	const minLong = -71.10324660580274
-	const maxLong = -71.02780143063184
+	fetch('https://yowmxwf75c.execute-api.us-east-1.amazonaws.com/prod/rat-locations', {
+		method: 'GET'
+	})
+		.then(response => {
+			if (response.status != 200) {
+				throw new Error('unable to featch data points');
+			}
+			console.log("successfully fetched data points")
+			return response.json()
+		})
+		.then(data => {
+			for (let i in data) {
+				console.log("adding data point to map: ", data[i]["latitude"], data[i]["longitude"])
+				let newPoint = new google.maps.LatLng(data[i]["latitude"], data[i]["longitude"])
+				dataPoints.push(newPoint)
+			}
+		})
+		.catch((error) => {
+			console.log(error)
+		});
 
-	let randomDataPoints = []
-
-	// loop 500 times and create a new random data point in that range
-	for (let i = 0; i < 500; i++) {
-		let lat = Math.random() * (maxLat - minLat) + minLat
-		let long = Math.random() * (maxLong - minLong) + minLong
-		let randomPoint = new google.maps.LatLng(lat, long)
-		randomDataPoints.push(randomPoint)
-	}
-
-	return randomDataPoints
+	return dataPoints
 }
 
 window.initMap = initMap;
