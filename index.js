@@ -30,12 +30,6 @@ function addPoint(e) {
 	// Insert this lat/long into DynamoDB by calling API Gateway
 	fetch('https://yowmxwf75c.execute-api.us-east-1.amazonaws.com/prod/rat-location', {
 		method: 'POST',
-		headers: {
-			'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-			'Access-Control-Allow-Methods': '*',
-			"Access-Control-Allow-Origin": "*", // Required for CORS support to work
-			"Access-Control-Allow-Credentials": true, // Required for cookies, authorization headers with HTTPS
-		  },
 		body: JSON.stringify({
 			 "latitude": latitude,
 			 "longitude": longitude 
