@@ -22,7 +22,6 @@ function initMap() {
 }
 
 function addPoint(e) {
-	console.log(e)
 
 	// Get lat and long from click event
 	const latitude = e.latLng.toJSON()["lat"]
@@ -32,9 +31,10 @@ function addPoint(e) {
 	fetch('https://yowmxwf75c.execute-api.us-east-1.amazonaws.com/prod/rat-location', {
 		method: 'POST',
 		headers: {
-			"access-control-allow-origin": "*",
 			'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 			'Access-Control-Allow-Methods': '*',
+			"Access-Control-Allow-Origin": "*", // Required for CORS support to work
+			"Access-Control-Allow-Credentials": true, // Required for cookies, authorization headers with HTTPS
 		  },
 		body: JSON.stringify({
 			 "latitude": latitude,
