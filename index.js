@@ -75,8 +75,8 @@ function getPoints() {
 			return response.json()
 		})
 		.then(data => {
+			console.log(data)
 			for (let i in data) {
-				console.log("adding data point to map: ", data[i]["latitude"], data[i]["longitude"])
 				let newPoint = new google.maps.LatLng(data[i]["latitude"], data[i]["longitude"])
 				dataPoints.push(newPoint)
 			}
