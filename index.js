@@ -1,3 +1,4 @@
+/* global google */
 /**
  * @license
  * Copyright 2019 Google LLC. All Rights Reserved.
@@ -6,18 +7,23 @@
 // This example requires the Visualization library. Include the libraries=visualization
 // parameter when you first load the API. For example:
 // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=visualization">
-let map, heatmap;
+let map, heatmap, pointArray;
+
+
 
 function initMap() {
+
+	pointArray =  pointArray = new google.maps.MVCArray(getPoints());
+
 	map = new google.maps.Map(document.getElementById("map"), {
 		zoom: 13,
 		center: { lat: 42.3601, lng: -71.0589 },
 		mapTypeId: "satellite",
 	});
 	heatmap = new google.maps.visualization.HeatmapLayer({
-		data: getPoints(),
-		map: map,
+		data: pointArray
 	});
+	heatmap.setMap(map);
 	map.addListener("click", addPoint);
 }
 
@@ -49,7 +55,10 @@ function addPoint(e) {
 			// Create a new point with the lat and long from click event
 			const point = new google.maps.LatLng(data.latitude, data.longitude)
 			// Add the new point to the heatmap
-			heatmap.data.push(point)
+			// heatmap.data.push(point)
+			pointArray.push(point)
+			console.log(pointArray.length)
+			google.maps.event.trigger(map, "resize");
 		})
 		.catch((error) => {
 			console.log(error)
@@ -62,10 +71,15 @@ function toggleHeatmap() {
 }
 
 function getPoints() {
+
 	let dataPoints = []
 
 	fetch('https://yowmxwf75c.execute-api.us-east-1.amazonaws.com/prod/rat-locations', {
-		method: 'GET'
+		method: 'GET',
+		headers: {
+			'Content-Type': "application/json",
+			'Access-Control-Allow-Origin': "*"
+		}
 	})
 		.then(response => {
 			if (response.status != 200) {
