@@ -73,7 +73,7 @@ function getPoints() {
 				data: pointArray,
 				map: map			
 			});
-			heatmap.set("radius", 40)
+			heatmap.set("radius", 100)
 			heatmap.set("opacity", .9)
 		})
 		.catch((error) => {
